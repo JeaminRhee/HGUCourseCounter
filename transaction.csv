@@ -1,5 +1,10 @@
-SKU,Quantity,Price,Description
-4039,50,0.99,SODA
-9100,5,9.5,T-SHIRT
-1949,30,110,JAVA PROGRAMMING TEXTBOOK
-5199,25,1.5,COOKIE
+StudentID, YearMonthGraduated, FistMajor, SecondMajor, CourseCode, CourseName, CourseCredit, YearTaken, SemesterTaken
+1,200802, Major1, Major2, GEK10001, 채플(한국어) 1,0,2002,1
+1,200802, Major1, Major2, GEK10008, 공동체리더십훈련1,1,2002,1
+1,200802, Major1, Major2, GEK10015, 한동인성교육,1,2002,1
+1,200802, Major1, Major2, GEK10030, 철학개론,3,2002,1
+1,200802, Major1, Major2, GEK10045, Christian Foundation 1,2,2002,1
+1,200802, Major1, Major2, GEK10061, 음악의 이해,3,2002,1
+1,200802, Major1, Major2, GEK20031, 독서토론과 글쓰기,3,2002,1
+1,200802, Major1, Major2, MEC10001, 경제학입문,3,2002,1
+1,200802, Major1, Major2, PCO10058, 정보처리실습,2,2002,1

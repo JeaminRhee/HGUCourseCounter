@@ -7,7 +7,7 @@ public class Student{
     private String studentId;
     private ArrayList<Course> coursesTaken;
     private HashMap<String, Integer> semesterByYearAndSemester;
-
+    
     //Constructor of the Student class
     public Student(String studentId) 
     {
