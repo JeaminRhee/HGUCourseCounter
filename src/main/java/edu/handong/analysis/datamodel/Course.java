@@ -15,7 +15,14 @@ public class Course{
     public Course(String line)
     {
     	String[] cName = line.split(",");
-        this.courseName = cName[4];
+    	this.yearMonthGraduated= cName[1];
+    	this.firstMajor = cName[2];
+    	this.secondMajor = cName[3];
+    	this.courseCode = cName[4];
+    	this.courseName = cName[5];
+    	this.courseCredit = cName[6];
+    	this.yearTaken = Integer.parseInt(cName[7]);
+    	this.semesterCourseTaken = Integer.parseInt(cName[8]);
     }
     
     //getter method of the Course class

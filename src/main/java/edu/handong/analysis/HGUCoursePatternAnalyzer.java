@@ -112,10 +112,7 @@ public class HGUCoursePatternAnalyzer {
 				}
 			}
 		}
-		
 		//System.out.println(students.get("20").getStudentId());
-		
-		
 		return students; // do not forget to return a proper variable.
 	}
 
@@ -132,7 +129,10 @@ public class HGUCoursePatternAnalyzer {
 	 * @return
 	 */
 	private ArrayList<String> countNumberOfCoursesTakenInEachSemester(Map<String, Student> sortedStudents) {
-
+		ArrayList<String> yo = new ArrayList<String>();
+		
+		\
+		
 		
 		return null; // do not forget to return a proper variable.
 	}
