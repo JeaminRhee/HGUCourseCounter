@@ -9,9 +9,6 @@ public class Student{
     private ArrayList<Course> coursesTaken = new ArrayList<Course>(254);
     private HashMap<String, Integer> semesterByYearAndSemester;
     
-    
-    
-    
     public ArrayList<Course> getCoursesTaken(){
     	
     	return this.coursesTaken;
@@ -21,8 +18,6 @@ public class Student{
     {
         this.studentId = studentId;
     }
-    
-    
     
     public void addCourse(Course newRecord) {
     	coursesTaken.add(newRecord);
@@ -55,14 +50,7 @@ public class Student{
     	
     	return rCount;
     }
-    //String okay = Integer.toString(aa) + "-" + Integer.toString(bb);
-	//this.getSemestersByYearAndSemester().put(okay, semester);
-	//int Nth = this.getNumCourseInNthSemester(semester);
-	
-    
-    
-    
-    
+
     public void setStudentId(String studentId1) {
     	this.studentId = studentId1;
     }

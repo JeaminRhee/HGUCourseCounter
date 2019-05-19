@@ -30,7 +30,6 @@ public class HGUCoursePatternAnalyzer {
 	 * @param args
 	 */
 	public void run(String[] args) {
-
 		try {
 			// when there are not enough arguments from CLI, it throws the NotEnoughArgmentException which must be defined by you.
 			if(args.length<2) {
@@ -71,7 +70,6 @@ public class HGUCoursePatternAnalyzer {
 		Utils.writeAFile(linesToBeSaved, resultPath);
 	}
 
-	
 	/**
 	 * This method create HashMap<String,Student> from the data csv file. Key is a student id and the corresponding object is an instance of Student.
 	 * The Student instance have all the Course instances taken by the student.
@@ -97,11 +95,9 @@ public class HGUCoursePatternAnalyzer {
 			students.put(Integer.toString(i+1), sLis[i]);
 		}
 		
-		
 		for(int i = 0 ; i < lines.size(); i++) {
 				cLis[i] = new Course(lines.get(i));
 		}
-		
 		
 		//System.out.println(cLis[0].getCourseCode());
 		
@@ -116,27 +112,6 @@ public class HGUCoursePatternAnalyzer {
 		}
 		
 		//System.out.println(sLis[1].getCoursesTaken().get(0));
-		
-		/*
-		int q =0 ;
-		for (String key: students.keySet()) {
-			//System.out.println(key);
-			
-			for(int k = 0 ; k < lines.size(); k++) { //line size = 17907
-				String [] ary = lines.get(k).split(",");
-				
-				if(key.equals(Integer.toString(Integer.parseInt(ary[0].trim())))) {
-					//sLis[Integer.parseInt(key.trim())].addCourse(cLis[q]);
-					//q++;		
-					
-					//System.out.println("hi");
-					//sLis[Integer.parseInt(key.trim())].addCourse(cLis[k]);
-					//System.out.println(sLis[Integer.parseInt(key.trim())].getStudentId());
-					
-				}
-			}
-		}
-		*/
 		
 		return students; // do not forget to return a proper variable.
 	}
@@ -153,8 +128,6 @@ public class HGUCoursePatternAnalyzer {
 	 * @param sortedStudents
 	 * @return
 	 */
-	
-	
 	private ArrayList<String> countNumberOfCoursesTakenInEachSemester(Map<String, Student> sortedStudents) {
 		
 		HashMap<String, Integer> [] semesterByYearAndSemester = new HashMap[253];
@@ -231,9 +204,7 @@ public class HGUCoursePatternAnalyzer {
 			String please = please1+","+Integer.toString(++cnt)+","+Integer.toString(sLis[i].getCoursesTaken().size()-hop); 
 			System.out.println(please);
 			result.add(please);
-			
-			
-			
+				
 		}
 		//result string sLis[i].getStudentId, cnt, semester, Nth.
 		return result; // do not forget to return a proper variable.

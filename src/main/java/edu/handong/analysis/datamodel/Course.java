@@ -70,6 +70,4 @@ public class Course{
     {
         return this.semesterCourseTaken;
     }
-    
-    
 }

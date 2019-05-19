@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.io.*;
 import java.util.Scanner;
 
-
 public class Utils {
 	public static ArrayList<String> getLines(String dataPath, boolean removeHeader){
 		//첫번째줄은 필요없어서 지우라고
@@ -30,11 +29,9 @@ public class Utils {
 		return lines;
 	}
 
-	
 	public static void writeAFile(ArrayList<String> lines, String targetFileName) {
 		//아웃풋 출력을 함.
 		//아웃풋을 작성할 파일이 없으면 filenotfoundexception 해야됨
-		
 		try {
 
 			FileWriter fw = new FileWriter(targetFileName);
@@ -46,16 +43,11 @@ public class Utils {
 				output.write(lines.get(i).toString()+"\n");
 			}
 			
-			
 		} catch (FileNotFoundException e) {
 			System.out.println("Cannot find file " + targetFileName);
+			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		
-		finally{
-			
-		}
-		
 	}
 }
