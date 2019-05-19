@@ -1,8 +1,10 @@
 package edu.handong.analysis.utils;
  
 import java.util.ArrayList;
+
 import java.io.*;
 import java.util.Scanner;
+
 
 public class Utils {
 	public static ArrayList<String> getLines(String dataPath, boolean removeHeader){
@@ -32,5 +34,28 @@ public class Utils {
 	public static void writeAFile(ArrayList<String> lines, String targetFileName) {
 		//아웃풋 출력을 함.
 		//아웃풋을 작성할 파일이 없으면 filenotfoundexception 해야됨
+		
+		try {
+
+			FileWriter fw = new FileWriter(targetFileName);
+			Writer output = new BufferedWriter(fw);
+			
+			int sz = lines.size();
+			
+			for(int i = 0 ; i < sz ; i ++) {
+				output.write(lines.get(i).toString()+"\n");
+			}
+			
+			
+		} catch (FileNotFoundException e) {
+			System.out.println("Cannot find file " + targetFileName);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		finally{
+			
+		}
+		
 	}
 }

@@ -22,8 +22,9 @@ public class HGUCoursePatternAnalyzer {
 
 	
 	public static Student[] sLis = new Student[253];
-	public static Course[] cLis = new Course[17907];
+	public static Course[] cLis = new Course[17908];
 	private HashMap<String,Student> students;
+
 
 	/**
 	 * This method runs our analysis logic to save the number courses taken by each student per semester in a result file.
@@ -31,7 +32,8 @@ public class HGUCoursePatternAnalyzer {
 	 * @param args
 	 */
 	public void run(String[] args) {
-		
+
+		System.out.println("StudentID, TotalNumberOfSemestersRegistered, Semester, NumCoursesTakenInTheSemester");
 		try {
 			// when there are not enough arguments from CLI, it throws the NotEnoughArgmentException which must be defined by you.
 			if(args.length<2) {
@@ -159,43 +161,74 @@ public class HGUCoursePatternAnalyzer {
 	private ArrayList<String> countNumberOfCoursesTakenInEachSemester(Map<String, Student> sortedStudents) {
 		
 		HashMap<String, Integer> [] semesterByYearAndSemester = new HashMap[253];
-		
+		ArrayList<String> result = new ArrayList<String>();
     	
-		for(int i = 1 ; i <= sLis.length; i++) {
+		for(int i = 0 ; i < sLis.length; i++) {
+			String please1="";
+			if(i<=9) {
+				please1 ="000" + sLis[i].getStudentId();
+			}else if(i>=10 && i<=99) {
+				please1 = "00" + sLis[i].getStudentId();
+			}else {
+				please1 ="0" + sLis[i].getStudentId();
+			}
 			//int a = Integer.parseInt(sLis[i].getStudentId());
 				//ArrayList<Course> coco = new ArrayList<Course>();
 			//System.out.println(sLis[i].getStudentId());
-			
-			int bb = sortedStudents.get(Integer.toString(i)).getCoursesTaken().get(0).getSemesterCourseTaken();
-			int aa = sortedStudents.get(Integer.toString(i)).getCoursesTaken().get(0).getYearTaken();
+				
+			int bb = sortedStudents.get(Integer.toString(i+1)).getCoursesTaken().get(0).getSemesterCourseTaken();
+			int aa = sortedStudents.get(Integer.toString(i+1)).getCoursesTaken().get(0).getYearTaken();
 			//System.out.println(aa);
 			
 			//int aa = sLis[i].getCoursesTaken().get(0).getYearTaken();
 			//int bb = sLis[i].getCoursesTaken().get(0).getSemesterCourseTaken();
 				
 			int cnt = 0;
-			for(int j = 1 ; j <= sLis[i].getCoursesTaken().size() ; j++) {
+			for(int j = 1 ; j < sLis[i].getCoursesTaken().size() ; j++) {
+				
+				//System.out.println(sLis[i].getCoursesTaken().size());
+				
 				if( ( sLis[i].getCoursesTaken().get(j-1).getYearTaken()!= sLis[i].getCoursesTaken().get(j).getYearTaken() ) || ( sLis[i].getCoursesTaken().get(j-1).getSemesterCourseTaken()!= sLis[i].getCoursesTaken().get(j).getSemesterCourseTaken() )) {
 					cnt++;
 					String okay = Integer.toString(aa) + "-" + Integer.toString(bb);
 					sLis[i].getSemestersByYearAndSemester().put(okay, cnt);
-					
-					//int Nth = sLis[i].getNumCourseInNthSemester(cnt);
+					//System.out.println(cnt);
+					int Nth = sLis[i].getNumCourseInNthSemester(cnt);
+					//System.out.println(Nth);
 					
 				}else {
 					continue;
 				}
 					
+			}
+			please1 = please1 +","+ Integer.toString(cnt+1);
+			
+			cnt = 0;
+			for(int j = 1 ; j < sLis[i].getCoursesTaken().size() ; j++) {
+				String please = please1;
+				//System.out.println(sLis[i].getCoursesTaken().size());
+				
+				if( ( sLis[i].getCoursesTaken().get(j-1).getYearTaken()!= sLis[i].getCoursesTaken().get(j).getYearTaken() ) || ( sLis[i].getCoursesTaken().get(j-1).getSemesterCourseTaken()!= sLis[i].getCoursesTaken().get(j).getSemesterCourseTaken() )) {
+					cnt++;
+					String okay = Integer.toString(aa) + "-" + Integer.toString(bb);
+					sLis[i].getSemestersByYearAndSemester().put(okay, cnt);
+					//System.out.println(cnt);
+					int numOfClasses = sLis[i].getNumCourseInNthSemester(cnt);
 					
-				//printout course.stuId, cnt, //NthSemester, howmanyClasses
-				// 
+					please = please1 +","+Integer.toString(cnt)+","+Integer.toString(numOfClasses);
+					System.out.println(please);
+					result.add(please);
+					
+				}else {
+					continue;
+				}
 					
 			}
-				
-				//String result = sLis[i].getCoursesTaken().get(0).getstudentId()
+			
 		}
 		
+		//result string sLis[i].getStudentId, cnt, semester, Nth.
 		
-		return null; // do not forget to return a proper variable.
+		return result; // do not forget to return a proper variable.
 	}
 }

@@ -29,26 +29,36 @@ public class Student{
     }
     
     public HashMap<String,Integer> getSemestersByYearAndSemester(){
-		HashMap<String, Integer> [] semesterByYearAndSemester = new HashMap[253];
+		
+    	semesterByYearAndSemester = new HashMap<String, Integer>();
 
-    
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	return null;
+    	return this.semesterByYearAndSemester;
     }
     
     public int getNumCourseInNthSemester(int semester) {
     	
+    	int comp=0, rCount=0;
     	
+    	for(int j = 1 ; j < this.getCoursesTaken().size() ; j++) {
+    		rCount++;
+			if( ( this.getCoursesTaken().get(j-1).getYearTaken()!= this.getCoursesTaken().get(j).getYearTaken() ) || ( this.getCoursesTaken().get(j-1).getSemesterCourseTaken()!= this.getCoursesTaken().get(j).getSemesterCourseTaken() )) {
+				comp++;
+				if(comp==semester) {
+					return rCount;
+				}
+				rCount=0;
+				
+			}else {
+				continue;
+			}
+		}
     	
-    	return 
+    	return rCount;
     }
-    
+    //String okay = Integer.toString(aa) + "-" + Integer.toString(bb);
+	//this.getSemestersByYearAndSemester().put(okay, semester);
+	//int Nth = this.getNumCourseInNthSemester(semester);
+	
     
     
     
