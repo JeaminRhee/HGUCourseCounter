@@ -10,8 +10,6 @@ public class Utils {
 		//어레이리스트 한줄이 파일의 한 줄을 읽음.
 		ArrayList<String> lines = new ArrayList<String>();
 		
-
-		
 		try {
 			System.out.println("hi");
 			Scanner inputStream = new Scanner(new File(dataPath));
@@ -22,6 +20,7 @@ public class Utils {
 
 			while(inputStream.hasNextLine())
 			{
+				System.out.println(1);
 				line = inputStream.nextLine();
 				lines.add(line);
 				System.out.println(line);

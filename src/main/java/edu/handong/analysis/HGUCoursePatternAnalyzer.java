@@ -43,6 +43,7 @@ public class HGUCoursePatternAnalyzer {
 
 		try {
 			inputStream = new Scanner(new File(dataPath));
+			
 			}  catch (FileNotFoundException e) {
 			System.out.println ("The file path does not exist. Please check your CLI argument!");
 			System.exit (0);
