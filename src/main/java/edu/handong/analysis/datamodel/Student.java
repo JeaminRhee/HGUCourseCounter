@@ -17,7 +17,7 @@ public class Student{
     public void addCourse(Course newRecord) {
     	
     }
-    
+    /*
     public HashMap<String,Integer> getSemestersByYearAndSemester(){
     	
     	return 
@@ -26,6 +26,6 @@ public class Student{
     public int getNumCourseInNthSemester(int semester) {
     	
     	return
-    }
+    }*/
     
 }
