@@ -203,32 +203,42 @@ public class HGUCoursePatternAnalyzer {
 			}
 			please1 = please1 +","+ Integer.toString(cnt+1);
 			
+			//System.out.println(sLis[0].getCoursesTaken().size());
+			int hop = 0;
 			cnt = 0;
 			for(int j = 1 ; j < sLis[i].getCoursesTaken().size() ; j++) {
+				hop = 0;
 				String please = please1;
 				//System.out.println(sLis[i].getCoursesTaken().size());
 				
 				if( ( sLis[i].getCoursesTaken().get(j-1).getYearTaken()!= sLis[i].getCoursesTaken().get(j).getYearTaken() ) || ( sLis[i].getCoursesTaken().get(j-1).getSemesterCourseTaken()!= sLis[i].getCoursesTaken().get(j).getSemesterCourseTaken() )) {
+									
 					cnt++;
 					String okay = Integer.toString(aa) + "-" + Integer.toString(bb);
 					sLis[i].getSemestersByYearAndSemester().put(okay, cnt);
 					//System.out.println(cnt);
+					
 					int numOfClasses = sLis[i].getNumCourseInNthSemester(cnt);
 					
+					hop = hop + numOfClasses;
+					
 					please = please1 +","+Integer.toString(cnt)+","+Integer.toString(numOfClasses);
-					System.out.println(please);
+					
 					result.add(please);
+					System.out.println(please);
 					
-				}else {
-					continue;
 				}
-					
 			}
 			
+			
+			String please = please1+","+Integer.toString(++cnt)+","+Integer.toString(sLis[i].getCoursesTaken().size() - hop); 
+			System.out.println(please);
+			result.add(please);
+			
+			
+			
 		}
-		
 		//result string sLis[i].getStudentId, cnt, semester, Nth.
-		
 		return result; // do not forget to return a proper variable.
 	}
 }
