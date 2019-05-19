@@ -10,29 +10,32 @@ public class Utils {
 	public static ArrayList<String> getLines(String dataPath, boolean removeHeader){
 		//첫번째줄은 필요없어서 지우라고
 		//어레이리스트 한줄이 파일의 한 줄을 읽음.
-		Scanner inputStream = null;
 		ArrayList<String> lines = new ArrayList<String>();
 		
+
+		
 		try {
-			inputStream = new Scanner(new File(dataPath));
-		} catch(FileNotFoundException e) {
+			System.out.println("hi");
+			Scanner inputStream = new Scanner(new File(dataPath));
+			if(inputStream.hasNextLine()) {
+				System.out.println("yes");	
+			}
+			String line ;
+
+			while(inputStream.hasNextLine())
+			{
+				line = inputStream.nextLine();
+				lines.add(line);
+				System.out.println(line);
+			}
+			
+		} catch (FileNotFoundException e) {
+			System.out.println ("The file path does not exist. Please check your CLI argument!");
 			System.exit(0);
 		}
-		
-		while(inputStream.hasNextLine()) {
-			if(removeHeader==true) {
-				removeHeader = false;
-				continue;
-			}else {
-				String line = inputStream.nextLine();
-				System.out.println(line);
-				lines.add(line);
-			}
-		}
-		inputStream.close();
-		
 		return lines;
 	}
+
 	
 	public static void writeAFile(ArrayList<String> lines, String targetFileName) {
 		//아웃풋 출력을 함.

@@ -37,21 +37,22 @@ public class HGUCoursePatternAnalyzer {
 		String dataPath = args[0]; // csv file to be analyzed
 		String resultPath = args[1]; // the file path where the results are saved.
 		
-		System.out.println(args[0] + args[1]);
+		System.out.println(args[0] +" "+ args[1]);
 		
 		Scanner inputStream =null;
 
 		try {
 			inputStream = new Scanner(new File(dataPath));
-			ArrayList<String> lines = Utils.getLines(dataPath, true); //한줄씩 쳐 넣는거임.
-		
-		}  catch (FileNotFoundException e) {
+			}  catch (FileNotFoundException e) {
 			System.out.println ("The file path does not exist. Please check your CLI argument!");
 			System.exit (0);
 		}
+		ArrayList<String> lines = Utils.getLines(dataPath, true); //한줄씩 쳐 넣는거임.
 		
+		System.out.println(lines);
+	}
 
-		
+		/*
 		//students = loadStudentCourseRecords(lines);
 		
 		// To sort HashMap entries by key values so that we can save the results by student ids in ascending order.
@@ -62,7 +63,7 @@ public class HGUCoursePatternAnalyzer {
 		
 		// Write a file (named like the value of resultPath) with linesTobeSaved.
 		Utils.writeAFile(linesToBeSaved, resultPath);
-	}
+	}*/
 	
 	/**
 	 * This method create HashMap<String,Student> from the data csv file. Key is a student id and the corresponding object is an instance of Student.
@@ -70,6 +71,7 @@ public class HGUCoursePatternAnalyzer {
 	 * @param lines
 	 * @return
 	 */
+		/*
 	private HashMap<String,Student> loadStudentCourseRecords(ArrayList<String> lines) {
 		
 		// TODO: Implement this method
@@ -89,9 +91,10 @@ public class HGUCoursePatternAnalyzer {
 	 * @param sortedStudents
 	 * @return
 	 */
+	/*
 	private ArrayList<String> countNumberOfCoursesTakenInEachSemester(Map<String, Student> sortedStudents) {
 
 		
 		return null; // do not forget to return a proper variable.
-	}
+	}*/
 }
