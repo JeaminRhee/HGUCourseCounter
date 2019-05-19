@@ -19,13 +19,10 @@ import edu.handong.analysis.utils.NotEnoughArgumentException;
 import edu.handong.analysis.utils.Utils;
 
 public class HGUCoursePatternAnalyzer {
-
-
 	int hop;
 	public static Student[] sLis = new Student[253];
 	public static Course[] cLis = new Course[17908];
 	private HashMap<String,Student> students;
-
 
 	/**
 	 * This method runs our analysis logic to save the number courses taken by each student per semester in a result file.
@@ -34,7 +31,6 @@ public class HGUCoursePatternAnalyzer {
 	 */
 	public void run(String[] args) {
 
-		System.out.println("StudentID, TotalNumberOfSemestersRegistered, Semester, NumCoursesTakenInTheSemester");
 		try {
 			// when there are not enough arguments from CLI, it throws the NotEnoughArgmentException which must be defined by you.
 			if(args.length<2) {

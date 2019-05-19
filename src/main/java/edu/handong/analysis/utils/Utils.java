@@ -41,7 +41,7 @@ public class Utils {
 			Writer output = new BufferedWriter(fw);
 			
 			int sz = lines.size();
-			
+			output.write("StudentID, TotalNumberOfSemestersRegistered, Semester, NumCoursesTakenInTheSemester\n");
 			for(int i = 0 ; i < sz ; i ++) {
 				output.write(lines.get(i).toString()+"\n");
 			}
