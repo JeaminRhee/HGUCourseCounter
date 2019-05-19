@@ -49,7 +49,7 @@ public class HGUCoursePatternAnalyzer {
 			System.exit (0);
 		}
 		ArrayList<String> lines = Utils.getLines(dataPath, true); //한줄씩 쳐 넣는거임.
-		
+		 
 		System.out.println(lines);
 	}
 
