@@ -8,16 +8,15 @@ public class Student{
     private ArrayList<Course> coursesTaken;
     private HashMap<String, Integer> semesterByYearAndSemester;
     
-    //Constructor of the Student class
     public Student(String studentId) 
     {
         this.studentId = studentId;
     }
     
     public void addCourse(Course newRecord) {
-    	
+    	coursesTaken.add(newRecord);
     }
-    /*
+    
     public HashMap<String,Integer> getSemestersByYearAndSemester(){
     	
     	return 
@@ -25,7 +24,15 @@ public class Student{
     
     public int getNumCourseInNthSemester(int semester) {
     	
-    	return
-    }*/
+    	return 
+    }
+    
+    public void setStudentId(String studentId1) {
+    	this.studentId = studentId1;
+    }
+    
+    public String getStudentId() {
+    	return this.studentId;
+    }
     
 }

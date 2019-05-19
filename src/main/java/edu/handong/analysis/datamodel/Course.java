@@ -14,8 +14,8 @@ public class Course{
     //Constructor of the class Course
     public Course(String line)
     {
-    	
-        this.courseName = line;
+    	String[] cName = line.split(",");
+        this.courseName = cName[4];
     }
     
     //getter method of the Course class

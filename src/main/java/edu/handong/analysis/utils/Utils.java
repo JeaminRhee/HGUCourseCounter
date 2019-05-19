@@ -9,19 +9,19 @@ public class Utils {
 		//첫번째줄은 필요없어서 지우라고
 		//어레이리스트 한줄이 파일의 한 줄을 읽음.
 		ArrayList<String> lines = new ArrayList<String>();
-		
-		try
-		{
-			Scanner inputStream = new Scanner(new File(dataPath)); 
-			String line = inputStream.nextLine();
-			System.out.println(line);
-			while (inputStream.hasNextLine())
-			{
-				line = inputStream.nextLine();
-				System.out.println(line);
+		String line;
+		try {
+			Scanner inputStream = new Scanner(new File(dataPath));
+			//if second argument is true, skip the headline
+			if (removeHeader == true)
+				line = inputStream.nextLine(); 
+			
+			while (inputStream.hasNextLine()) {
+				line = inputStream.nextLine(); 
+				lines.add(line); 
 			}
-			inputStream.close( );
-		}
+			inputStream.close(); 
+		}//end of try
 		catch(FileNotFoundException e) {
 			System.out.println("Cannot find file " + dataPath);
 		}
