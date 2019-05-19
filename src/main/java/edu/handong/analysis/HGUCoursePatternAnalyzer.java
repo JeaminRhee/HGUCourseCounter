@@ -19,6 +19,10 @@ import edu.handong.analysis.utils.NotEnoughArgumentException;
 import edu.handong.analysis.utils.Utils;
 
 public class HGUCoursePatternAnalyzer {
+
+	
+	public static Student[] sLis = new Student[253];
+	public static Course[] cLis = new Course[17907];
 	private HashMap<String,Student> students;
 
 	/**
@@ -67,6 +71,7 @@ public class HGUCoursePatternAnalyzer {
 		// Write a file (named like the value of resultPath) with linesTobeSaved.
 		Utils.writeAFile(linesToBeSaved, resultPath);
 	}
+
 	
 	/**
 	 * This method create HashMap<String,Student> from the data csv file. Key is a student id and the corresponding object is an instance of Student.
@@ -78,9 +83,6 @@ public class HGUCoursePatternAnalyzer {
 		//List<Student> stuList = new ArrayList<Student>();
 		//List<Course> cList = new ArrayList<Course>();
 		
-		Student[] sLis = new Student[1024];
-		Course[] cLis = new Course[lines.size()];
-		
 		students = new HashMap<String,Student>();
 		/*
 		for(int num=0; num < lines.size(); num++) {
@@ -90,29 +92,53 @@ public class HGUCoursePatternAnalyzer {
 			System.out.println("hi");
 		}*/
 		
-		for(int i = 0 ; i < 254; i++) {
-			String [] ary = lines.get(i).split(",");
-			students.put(Integer.toString(i), sLis[i] = new Student(ary[0]));	
+		for(int i = 0 ; i < 253 ; i++) {
+			//String [] ary = lines.get(i).split(",");
+			sLis[i] = new Student(Integer.toString(i+1)); //sLis는 0~253 , stuId 1~253
+			students.put(Integer.toString(i+1), sLis[i]);
 		}
 		
 		
 		for(int i = 0 ; i < lines.size(); i++) {
-			String [] ary = lines.get(i).split(",");
-			cLis[i] = new Course(lines.get(i));
+				cLis[i] = new Course(lines.get(i));
 		}
 		
 		
-		for (String key: students.keySet()) {
-			//System.out.println(key);
-			
-			for(int k = 0 ; k < lines.size(); k++) {
-				String [] ary = lines.get(k).split(",");
-				if(key==Integer.toString(Integer.parseInt(ary[0]))) {
-					sLis[Integer.parseInt(key)].addCourse(cLis[k]);
+		//System.out.println(cLis[0].getCourseCode());
+		
+		for(int j = 0 ; j < 253 ; j ++) {
+			for(int i = 0 ; i < lines.size(); i++) {
+				
+				if(Integer.parseInt(sLis[j].getStudentId()) == Integer.parseInt(cLis[i].getStudentId())) {
+					//System.out.println(cLis[i].getCourseCode());
+					sLis[j].addCourse(cLis[i]);
 				}
 			}
 		}
-		//System.out.println(students.get("20").getStudentId());
+		
+		//System.out.println(sLis[1].getCoursesTaken().get(0));
+		
+		/*
+		int q =0 ;
+		for (String key: students.keySet()) {
+			//System.out.println(key);
+			
+			for(int k = 0 ; k < lines.size(); k++) { //line size = 17907
+				String [] ary = lines.get(k).split(",");
+				
+				if(key.equals(Integer.toString(Integer.parseInt(ary[0].trim())))) {
+					//sLis[Integer.parseInt(key.trim())].addCourse(cLis[q]);
+					//q++;		
+					
+					//System.out.println("hi");
+					//sLis[Integer.parseInt(key.trim())].addCourse(cLis[k]);
+					//System.out.println(sLis[Integer.parseInt(key.trim())].getStudentId());
+					
+				}
+			}
+		}
+		*/
+		
 		return students; // do not forget to return a proper variable.
 	}
 
@@ -128,10 +154,46 @@ public class HGUCoursePatternAnalyzer {
 	 * @param sortedStudents
 	 * @return
 	 */
+	
+	
 	private ArrayList<String> countNumberOfCoursesTakenInEachSemester(Map<String, Student> sortedStudents) {
-		ArrayList<String> yo = new ArrayList<String>();
 		
-		\
+		HashMap<String, Integer> [] semesterByYearAndSemester = new HashMap[253];
+		
+    	
+		for(int i = 1 ; i <= sLis.length; i++) {
+			//int a = Integer.parseInt(sLis[i].getStudentId());
+				//ArrayList<Course> coco = new ArrayList<Course>();
+			//System.out.println(sLis[i].getStudentId());
+			
+			int bb = sortedStudents.get(Integer.toString(i)).getCoursesTaken().get(0).getSemesterCourseTaken();
+			int aa = sortedStudents.get(Integer.toString(i)).getCoursesTaken().get(0).getYearTaken();
+			//System.out.println(aa);
+			
+			//int aa = sLis[i].getCoursesTaken().get(0).getYearTaken();
+			//int bb = sLis[i].getCoursesTaken().get(0).getSemesterCourseTaken();
+				
+			int cnt = 0;
+			for(int j = 1 ; j <= sLis[i].getCoursesTaken().size() ; j++) {
+				if( ( sLis[i].getCoursesTaken().get(j-1).getYearTaken()!= sLis[i].getCoursesTaken().get(j).getYearTaken() ) || ( sLis[i].getCoursesTaken().get(j-1).getSemesterCourseTaken()!= sLis[i].getCoursesTaken().get(j).getSemesterCourseTaken() )) {
+					cnt++;
+					String okay = Integer.toString(aa) + "-" + Integer.toString(bb);
+					sLis[i].getSemestersByYearAndSemester().put(okay, cnt);
+					
+					//int Nth = sLis[i].getNumCourseInNthSemester(cnt);
+					
+				}else {
+					continue;
+				}
+					
+					
+				//printout course.stuId, cnt, //NthSemester, howmanyClasses
+				// 
+					
+			}
+				
+				//String result = sLis[i].getCoursesTaken().get(0).getstudentId()
+		}
 		
 		
 		return null; // do not forget to return a proper variable.
