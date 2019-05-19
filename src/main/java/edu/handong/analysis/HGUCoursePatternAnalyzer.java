@@ -1,17 +1,21 @@
 package edu.handong.analysis;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileInputStream;
 
 import edu.handong.analysis.datamodel.Course;
 import edu.handong.analysis.datamodel.Student;
-import edu.handong.analysise.utils.NotEnoughArgumentException;
-import edu.handong.analysise.utils.Utils;
+import edu.handong.analysis.utils.NotEnoughArgumentException;
+//import edu.handong.analysis.utils.NotEnoughArgumentException;
+import edu.handong.analysis.utils.Utils;
 
 public class HGUCoursePatternAnalyzer {
-
 	private HashMap<String,Student> students;
 	
 	/**
@@ -20,21 +24,35 @@ public class HGUCoursePatternAnalyzer {
 	 * @param args
 	 */
 	public void run(String[] args) {
-		
 		try {
 			// when there are not enough arguments from CLI, it throws the NotEnoughArgmentException which must be defined by you.
-			if(args.length<2)
-				throw new NotEnoughArgumentException();
+			if(args.length<2) {
+				throw new NotEnoughArgumentException("No CLI argument Exception! Please put a file path.");
+			}
 		} catch (NotEnoughArgumentException e) {
 			System.out.println(e.getMessage());
 			System.exit(0);
 		}
-		
+
 		String dataPath = args[0]; // csv file to be analyzed
 		String resultPath = args[1]; // the file path where the results are saved.
-		ArrayList<String> lines = Utils.getLines(dataPath, true);
 		
-		students = loadStudentCourseRecords(lines);
+		System.out.println(args[0] + args[1]);
+		
+		Scanner inputStream =null;
+
+		try {
+			inputStream = new Scanner(new File(dataPath));
+			ArrayList<String> lines = Utils.getLines(dataPath, true); //한줄씩 쳐 넣는거임.
+		
+		}  catch (FileNotFoundException e) {
+			System.out.println ("The file path does not exist. Please check your CLI argument!");
+			System.exit (0);
+		}
+		
+
+		
+		//students = loadStudentCourseRecords(lines);
 		
 		// To sort HashMap entries by key values so that we can save the results by student ids in ascending order.
 		Map<String, Student> sortedStudents = new TreeMap<String,Student>(students); 
@@ -68,13 +86,11 @@ public class HGUCoursePatternAnalyzer {
 	 * 
 	 * 0001,14,1,9 => this means, 0001 student registered 14 semeters in total. In the first semeter (1), the student took 9 courses.
 	 * 
-	 * 
 	 * @param sortedStudents
 	 * @return
 	 */
 	private ArrayList<String> countNumberOfCoursesTakenInEachSemester(Map<String, Student> sortedStudents) {
-		
-		// TODO: Implement this method
+
 		
 		return null; // do not forget to return a proper variable.
 	}
