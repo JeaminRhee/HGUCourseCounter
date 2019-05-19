@@ -20,7 +20,8 @@ import edu.handong.analysis.utils.Utils;
 
 public class HGUCoursePatternAnalyzer {
 
-	
+
+	int hop;
 	public static Student[] sLis = new Student[253];
 	public static Course[] cLis = new Course[17908];
 	private HashMap<String,Student> students;
@@ -203,11 +204,12 @@ public class HGUCoursePatternAnalyzer {
 			}
 			please1 = please1 +","+ Integer.toString(cnt+1);
 			
+			
 			//System.out.println(sLis[0].getCoursesTaken().size());
-			int hop = 0;
+			hop = 0;
 			cnt = 0;
 			for(int j = 1 ; j < sLis[i].getCoursesTaken().size() ; j++) {
-				hop = 0;
+				
 				String please = please1;
 				//System.out.println(sLis[i].getCoursesTaken().size());
 				
@@ -230,8 +232,7 @@ public class HGUCoursePatternAnalyzer {
 				}
 			}
 			
-			
-			String please = please1+","+Integer.toString(++cnt)+","+Integer.toString(sLis[i].getCoursesTaken().size() - hop); 
+			String please = please1+","+Integer.toString(++cnt)+","+Integer.toString(sLis[i].getCoursesTaken().size()-hop); 
 			System.out.println(please);
 			result.add(please);
 			
