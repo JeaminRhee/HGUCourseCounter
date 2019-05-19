@@ -2,8 +2,6 @@ package edu.handong.analysis.utils;
 
 import java.util.ArrayList;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class Utils {
