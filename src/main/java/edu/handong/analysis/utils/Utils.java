@@ -42,6 +42,8 @@ public class Utils {
 			for(int i = 0 ; i < sz ; i ++) {
 				output.write(lines.get(i).toString()+"\n");
 			}
+			output.flush();
+			output.close();
 			
 		} catch (FileNotFoundException e) {
 			System.out.println("Cannot find file " + targetFileName);
