@@ -20,8 +20,11 @@ import edu.handong.analysis.utils.Utils;
 
 public class HGUCoursePatternAnalyzer {
 	int hop;
-	public static Student[] sLis = new Student[253];
-	public static Course[] cLis = new Course[17908];
+	//public static Student[] sLis = new Student[253];
+	public static ArrayList<Student> sLis = new ArrayList<Student>();
+	//public static Course[] cLis = new Course[17908];		
+	public static ArrayList<Course> cLis = new ArrayList<Course>();
+	
 	private HashMap<String,Student> students;
 
 	/**
@@ -56,8 +59,7 @@ public class HGUCoursePatternAnalyzer {
 		}
 		
 		
-		ArrayList<String> lines = Utils.getLines(dataPath, true); //한줄씩 쳐 넣는거임.	
-		
+		ArrayList<String> lines = Utils.getLines(dataPath, true); //한줄씩 넣는거임.	
 		students = loadStudentCourseRecords(lines);
 		
 		// To sort HashMap entries by key values so that we can save the results by studentIds in ascending order.
@@ -91,23 +93,29 @@ public class HGUCoursePatternAnalyzer {
 		
 		for(int i = 0 ; i < 253 ; i++) {
 			//String [] ary = lines.get(i).split(",");
-			sLis[i] = new Student(Integer.toString(i+1)); //sLis는 0~253 , stuId 1~253
-			students.put(Integer.toString(i+1), sLis[i]);
+			//sLis[i] = new Student(Integer.toString(i+1)); //sLis는 0~252 , stuId 1~253
+			sLis.add(new Student(Integer.toString(i+1)));
+			students.put(Integer.toString(i+1), sLis.get(i));
 		}
 		
 		for(int i = 0 ; i < lines.size(); i++) {
-				cLis[i] = new Course(lines.get(i));
+				//cLis[i] = new Course(lines.get(i));
+				cLis.add(new Course(lines.get(i)));
 		}
 		
 		//System.out.println(cLis[0].getCourseCode());
 		
 		for(int j = 0 ; j < 253 ; j ++) {
 			for(int i = 0 ; i < lines.size(); i++) {
-				
+				/*
 				if(Integer.parseInt(sLis[j].getStudentId()) == Integer.parseInt(cLis[i].getStudentId())) {
 					//System.out.println(cLis[i].getCourseCode());
 					sLis[j].addCourse(cLis[i]);
+				}*/
+				if(Integer.parseInt(sLis.get(j).getStudentId()) == Integer.parseInt(cLis.get(i).getStudentId())) {
+					sLis.get(j).addCourse(cLis.get(i));
 				}
+				
 			}
 		}
 		
@@ -133,14 +141,18 @@ public class HGUCoursePatternAnalyzer {
 		HashMap<String, Integer> [] semesterByYearAndSemester = new HashMap[253];
 		ArrayList<String> result = new ArrayList<String>();
     	
-		for(int i = 0 ; i < sLis.length; i++) {
+		//for(int i = 0 ; i < sLis.length; i++) {
+		for(int i = 0 ; i < sLis.size() ; i++) {
 			String please1="";
 			if(i<=9) {
-				please1 ="000" + sLis[i].getStudentId();
+				//please1 ="000" + sLis[i].getStudentId();
+				please1 = "000" + sLis.get(i).getStudentId();
 			}else if(i>=10 && i<=99) {
-				please1 = "00" + sLis[i].getStudentId();
+				//please1 = "00" + sLis[i].getStudentId();
+				please1 = "00" + sLis.get(i).getStudentId();
 			}else {
-				please1 ="0" + sLis[i].getStudentId();
+				//please1 ="0" + sLis[i].getStudentId();
+				please1 = "0" + sLis.get(i).getStudentId();
 			}
 			//int a = Integer.parseInt(sLis[i].getStudentId());
 				//ArrayList<Course> coco = new ArrayList<Course>();
@@ -154,17 +166,19 @@ public class HGUCoursePatternAnalyzer {
 			//int bb = sLis[i].getCoursesTaken().get(0).getSemesterCourseTaken();
 				
 			int cnt = 0;
-			for(int j = 1 ; j < sLis[i].getCoursesTaken().size() ; j++) {
-				
+			//for(int j = 1 ; j < sLis[i].getCoursesTaken().size() ; j++) {
+			for(int j = 1 ; j < sLis.get(i).getCoursesTaken().size() ; j++) {
 				//System.out.println(sLis[i].getCoursesTaken().size());
 				
-				if( ( sLis[i].getCoursesTaken().get(j-1).getYearTaken()!= sLis[i].getCoursesTaken().get(j).getYearTaken() ) || ( sLis[i].getCoursesTaken().get(j-1).getSemesterCourseTaken()!= sLis[i].getCoursesTaken().get(j).getSemesterCourseTaken() )) {
+				//if( ( sLis[i].getCoursesTaken().get(j-1).getYearTaken()!= sLis[i].getCoursesTaken().get(j).getYearTaken() ) || ( sLis[i].getCoursesTaken().get(j-1).getSemesterCourseTaken()!= sLis[i].getCoursesTaken().get(j).getSemesterCourseTaken() )) {
+				if( ( sLis.get(i).getCoursesTaken().get(j-1).getYearTaken()!= sLis.get(i).getCoursesTaken().get(j).getYearTaken() ) || ( sLis.get(i).getCoursesTaken().get(j-1).getSemesterCourseTaken()!= sLis.get(i).getCoursesTaken().get(j).getSemesterCourseTaken() )) {
 					cnt++;
 					String okay = Integer.toString(aa) + "-" + Integer.toString(bb);
-					sLis[i].getSemestersByYearAndSemester().put(okay, cnt);
-					//System.out.println(cnt);
-					int Nth = sLis[i].getNumCourseInNthSemester(cnt);
-					//System.out.println(Nth);
+					//sLis[i].getSemestersByYearAndSemester().put(okay, cnt);
+					sLis.get(i).getSemestersByYearAndSemester().put(okay, cnt);
+					
+					//int Nth = sLis[i].getNumCourseInNthSemester(cnt);
+					int Nth = sLis.get(i).getNumCourseInNthSemester(cnt);
 					
 				}else {
 					continue;
@@ -177,19 +191,23 @@ public class HGUCoursePatternAnalyzer {
 			//System.out.println(sLis[0].getCoursesTaken().size());
 			hop = 0;
 			cnt = 0;
-			for(int j = 1 ; j < sLis[i].getCoursesTaken().size() ; j++) {
+			//for(int j = 1 ; j < sLis[i].getCoursesTaken().size() ; j++) {
+			for(int j = 1 ; j < sLis.get(i).getCoursesTaken().size() ; j++) {
 				
 				String please = please1;
 				//System.out.println(sLis[i].getCoursesTaken().size());
 				
-				if( ( sLis[i].getCoursesTaken().get(j-1).getYearTaken()!= sLis[i].getCoursesTaken().get(j).getYearTaken() ) || ( sLis[i].getCoursesTaken().get(j-1).getSemesterCourseTaken()!= sLis[i].getCoursesTaken().get(j).getSemesterCourseTaken() )) {
-									
+				//if( ( sLis[i].getCoursesTaken().get(j-1).getYearTaken()!= sLis[i].getCoursesTaken().get(j).getYearTaken() ) || ( sLis[i].getCoursesTaken().get(j-1).getSemesterCourseTaken()!= sLis[i].getCoursesTaken().get(j).getSemesterCourseTaken() )) {
+				if( ( sLis.get(i).getCoursesTaken().get(j-1).getYearTaken()!= sLis.get(i).getCoursesTaken().get(j).getYearTaken() ) || ( sLis.get(i).getCoursesTaken().get(j-1).getSemesterCourseTaken()!= sLis.get(i).getCoursesTaken().get(j).getSemesterCourseTaken() )) {
+					
 					cnt++;
 					String okay = Integer.toString(aa) + "-" + Integer.toString(bb);
-					sLis[i].getSemestersByYearAndSemester().put(okay, cnt);
+					//sLis[i].getSemestersByYearAndSemester().put(okay, cnt);
+					sLis.get(i).getSemestersByYearAndSemester().put(okay, cnt);
 					//System.out.println(cnt);
 					
-					int numOfClasses = sLis[i].getNumCourseInNthSemester(cnt);
+					//int numOfClasses = sLis[i].getNumCourseInNthSemester(cnt);
+					int numOfClasses = sLis.get(i).getNumCourseInNthSemester(cnt);
 					
 					hop = hop + numOfClasses;
 					
@@ -201,7 +219,9 @@ public class HGUCoursePatternAnalyzer {
 				}
 			}
 			
-			String please = please1+","+Integer.toString(++cnt)+","+Integer.toString(sLis[i].getCoursesTaken().size()-hop); 
+			//String please = please1+","+Integer.toString(++cnt)+","+Integer.toString(sLis[i].getCoursesTaken().size()-hop); 
+			String please = please1+","+Integer.toString(++cnt)+","+Integer.toString(sLis.get(i).getCoursesTaken().size()-hop); 
+			
 			System.out.println(please);
 			result.add(please);
 				
