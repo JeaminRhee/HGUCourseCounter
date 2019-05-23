@@ -214,15 +214,14 @@ public class HGUCoursePatternAnalyzer {
 					please = please1 +","+Integer.toString(cnt)+","+Integer.toString(numOfClasses);
 					
 					result.add(please);
-					System.out.println(please);
+					//****System.out.println(please);
 					
 				}
 			}
 			
-			//String please = please1+","+Integer.toString(++cnt)+","+Integer.toString(sLis[i].getCoursesTaken().size()-hop); 
 			String please = please1+","+Integer.toString(++cnt)+","+Integer.toString(sLis.get(i).getCoursesTaken().size()-hop); 
 			
-			System.out.println(please);
+			//******System.out.println(please);
 			result.add(please);
 				
 		}
