@@ -22,8 +22,8 @@ public class Course{
     	this.courseCode = cName[4];
     	this.courseName = cName[5];
     	this.courseCredit = cName[6];
-    	this.yearTaken = Integer.parseInt(cName[7].trim());
-    	this.semesterCourseTaken = Integer.parseInt(cName[8].trim());
+    	this.yearTaken = Integer.parseInt(cName[7]);
+    	this.semesterCourseTaken = Integer.parseInt(cName[8]);
     }
     
     //getter method of the Course class

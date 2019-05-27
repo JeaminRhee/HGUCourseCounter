@@ -2,24 +2,35 @@ package edu.handong.analysis;
 
 import java.io.*;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
 import java.util.*;
-
-import java.util.Scanner;
-import java.io.File;
-import java.io.FileInputStream;
-
 import edu.handong.analysis.datamodel.Course;
 import edu.handong.analysis.datamodel.Student;
 import edu.handong.analysis.utils.NotEnoughArgumentException;
-//import edu.handong.analysis.utils.NotEnoughArgumentException;
 import edu.handong.analysis.utils.Utils;
 
 public class HGUCoursePatternAnalyzer {
-	int hop;
+	
+	int hop,s,e,studentii1,studentii2,takenYearr1,takenYearr2,takenSemester1,takenSemester2;
+	String a="", o="", i="", c="", sth1="";
+	boolean h=false;
+	
+	int pTookTheCourse, numOfStudentInTheSem;
+	public String[] bug;
+	public String[] mola;
+	String takenYearr="", takenSemesterr="", studentIDd="", courseNamee="", diff1="9999", diff2="9999" ;
+	double sth=0.00;
+	
 	//public static Student[] sLis = new Student[253];
 	public static ArrayList<Student> sLis = new ArrayList<Student>();
 	//public static Course[] cLis = new Course[17908];		
@@ -31,8 +42,108 @@ public class HGUCoursePatternAnalyzer {
 	 * This method runs our analysis logic to save the number courses taken by each student per semester in a result file.
 	 * Run method must not be changed!!
 	 * @param args
+	 * @throws IOException 
 	 */
-	public void run(String[] args) {
+	public void run(String[] args) throws IOException {
+		
+		Options options = new Options();
+		
+		createOption(options); //creating options done.
+		
+		parseOption(options, args);
+		//System.out.println(a);
+		
+		if(h) {
+			printHelp(options);
+			//return;
+			System.exit(0);
+			return;
+		}
+		
+		else if(a.equals("2")) {  //this is the problem
+			ArrayList<String> lines = Utils.getLines(i, true); //한줄씩 넣는거임.	
+			ArrayList<String> result = new ArrayList<String>();
+			for(String line: lines) {
+				HashMap<Integer, Integer> hash = new HashMap<Integer,Integer>();
+				if(line.contains(c)) {
+					bug = line.split(",");
+					takenYearr = bug[7];
+					takenSemesterr = bug[8];
+					studentIDd = bug[0];
+					courseNamee = bug[5];
+					pTookTheCourse = 0;
+					numOfStudentInTheSem = 0;
+					studentii1 = Integer.parseInt(studentIDd);
+					takenYearr1 = Integer.parseInt(bug[7]);
+					takenSemester1 = Integer.parseInt(bug[8]);
+					sth=0.00;
+					
+					if( ((Integer.parseInt(bug[7])!=Integer.parseInt(diff1))) && ((Integer.parseInt(bug[8])!=(Integer.parseInt(diff2)))) ) {
+						int count=0;
+						for(String line1: lines) {
+							
+							mola = line1.split(",");
+							studentii2 = Integer.parseInt(mola[0]);
+							takenYearr2 = Integer.parseInt(mola[7]);
+							takenSemester2 = Integer.parseInt(mola[8]);
+							
+							//맞아
+							if( (c.equals(mola[4])) && (takenYearr.equals(mola[7])) && (takenSemesterr.equals(mola[8])) ) {
+								
+								//
+								pTookTheCourse++;
+								//System.out.println(pTookTheCourse);
+							}
+							
+							//이게 문제' //year sem 같을때만 hashmap에 key로 넣기//  count 하고 studentId중복 있으면 
+							
+							if( (takenYearr1==takenYearr2) && (takenSemester1==takenSemester2)) {
+								
+								//hashmap key는 duplicate 없으니까 key = studentii1, value = count;
+								//
+								//count++;
+								hash.put(studentii2, ++count);
+								numOfStudentInTheSem++;
+								//System.out.println(numOfStudentInTheSem);
+								diff1 = mola[7];
+								diff2 = mola[8];
+							}
+						}
+						
+						//문제
+						numOfStudentInTheSem = hash.size();
+						Double ya = new Double(hash.size());
+						Double yo = new Double(pTookTheCourse);
+						
+						sth = (yo / ya) * 100;
+						
+						
+						sth1 = String.format("%.1f", sth) + "%";
+						
+						//문제가 startYear endYear 고려해야됨. if( startYear(s) endYear(e) )
+						if( (Integer.parseInt(bug[7]) < s) || ( Integer.parseInt(bug[7]) > e ) ) {
+
+						}else {
+							//bug[5]->coursename //bug[7]->takenYear, bug[8]=takenSemester
+							String rst = bug[7]+","+bug[8]+","+c+","+courseNamee+","+Integer.toString(numOfStudentInTheSem)+","+Integer.toString(pTookTheCourse)+","+sth1;
+							result.add(rst);
+						}
+					}					
+				}
+			}
+			Collections.sort(result); //sorting the arraylist.
+			Utils.writeAAFile(result, o);
+			
+			System.exit (0);
+			
+		}else if(a=="1") {
+			//this is generating hw5 result 
+		}
+		
+		
+		
+		//System.out.println(i + " " + o + " ");
+		/*
 		try {
 			// when there are not enough arguments from CLI, it throws the NotEnoughArgmentException which must be defined by you.
 			if(args.length<2) {
@@ -41,14 +152,14 @@ public class HGUCoursePatternAnalyzer {
 		} catch (NotEnoughArgumentException e) {
 			System.out.println(e.getMessage());
 			System.exit(0);
-		}
+		}*/
 
-		String dataPath = args[0]; // csv file to be analyzed
-		String resultPath = args[1]; // the file path where the results are saved.
+		String dataPath = i; // csv file to be analyzed
+		String resultPath = o; // the file path where the results are saved.
 		
 		//System.out.println(args[0] +" "+ args[1]);
 		
-		Scanner inputStream =null;
+		Scanner inputStream = null;
 
 		try {
 			inputStream = new Scanner(new File(dataPath));
@@ -72,6 +183,100 @@ public class HGUCoursePatternAnalyzer {
 		Utils.writeAFile(linesToBeSaved, resultPath);
 	}
 
+	
+	//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&7//
+	private void parseOption(Options options, String[] args) {
+		CommandLineParser parser = new DefaultParser();
+		
+		try {
+			CommandLine commandLine = parser.parse(options, args);
+			
+			//if a is 1, then HW5 using apacheCSV
+			//if a is 2, then it should figure out the rate
+			
+			a = commandLine.getOptionValue("a"); //analysis
+			//System.out.println(a);
+			
+			i = commandLine.getOptionValue("i"); //input path
+			
+			//System.out.println(a);
+			o = commandLine.getOptionValue("o"); //output path
+
+			c = commandLine.getOptionValue("c"); //course code
+			s = Integer.parseInt(commandLine.getOptionValue("s")); //start year
+			e = Integer.parseInt(commandLine.getOptionValue("e")); //end year
+			
+			h = commandLine.hasOption("h"); //if the arguments has h
+
+		} catch(Exception e) {
+			printHelp(options);
+		}
+		
+	}
+
+	private void printHelp(Options options) {
+		// automatically generate the help statement
+		HelpFormatter formatter = new HelpFormatter();
+		String header = "HGU Course Analyzer";
+		String footer ="";//"\nPlease report issues at https://github.com/lifove/CLIExample/issues";
+		formatter.printHelp("HGUCourseCounter", header, options, footer, true);
+	}
+	
+	//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&7//	
+	private void createOption(Options options) {
+		options.addOption(Option.builder("i").longOpt("input")
+				.desc("Set an input file path")
+				.hasArg() //yes
+				.argName("Input path")
+				.required() //yes
+				.build()
+				);
+		
+		options.addOption(Option.builder("o").longOpt("output")
+				.desc("Set an output file path")
+				.hasArg() //yes
+				.argName("Output path")
+				.required() //yes
+				.build()
+				);		
+
+		options.addOption(Option.builder("a").longOpt("analysis")
+				.desc("1: Count courses per semester, 2: Count per course name and year")
+				.hasArg() //yes
+				.argName("Analysis option")
+				.required() //yes
+				.build()
+				);		
+		
+		options.addOption(Option.builder("c").longOpt("course code")
+				.desc("Course code for '-a 2' option")
+				.hasArg() 	//yes
+				.argName("course code")
+				//.required() //yes but// debatable.
+				.build()
+				);	
+		
+		options.addOption(Option.builder("s").longOpt("startyear")
+				.desc("Set the start year for analysis e.g., -s 2002")
+				.hasArg() 	//yes
+				.argName("Start year for analysis")
+				.required() //yes
+				.build()
+				);		
+		
+		options.addOption(Option.builder("e").longOpt("endyear")
+				.desc("Set the end year for analysis e.g., -e 2005")
+				.hasArg() 	//yes
+				.argName("End year for analysis")
+				.required() //yes
+				.build()
+				);			
+		
+		options.addOption(Option.builder("h").longOpt("help")
+		        .desc("Show a Help page")
+		        .build());		
+	}
+
 	/**
 	 * This method create HashMap<String,Student> from the data csv file. Key is a student id and the corresponding object is an instance of Student.
 	 * The Student instance have all the Course instances taken by the student.
@@ -82,7 +287,12 @@ public class HGUCoursePatternAnalyzer {
 		//List<Student> stuList = new ArrayList<Student>();
 		//List<Course> cList = new ArrayList<Course>();
 		
+		//System.out.println(lines.get(0));
+		
+		
+		
 		students = new HashMap<String,Student>();
+		
 		/*
 		for(int num=0; num < lines.size(); num++) {
 			String [] ary = lines.get(num).split(",");
@@ -146,13 +356,13 @@ public class HGUCoursePatternAnalyzer {
 			String please1="";
 			if(i<=9) {
 				//please1 ="000" + sLis[i].getStudentId();
-				please1 = "000" + sLis.get(i).getStudentId();
+				please1 = sLis.get(i).getStudentId();
 			}else if(i>=10 && i<=99) {
 				//please1 = "00" + sLis[i].getStudentId();
-				please1 = "00" + sLis.get(i).getStudentId();
+				please1 = sLis.get(i).getStudentId();
 			}else {
 				//please1 ="0" + sLis[i].getStudentId();
-				please1 = "0" + sLis.get(i).getStudentId();
+				please1 = sLis.get(i).getStudentId();
 			}
 			//int a = Integer.parseInt(sLis[i].getStudentId());
 				//ArrayList<Course> coco = new ArrayList<Course>();
@@ -164,7 +374,7 @@ public class HGUCoursePatternAnalyzer {
 			
 			//int aa = sLis[i].getCoursesTaken().get(0).getYearTaken();
 			//int bb = sLis[i].getCoursesTaken().get(0).getSemesterCourseTaken();
-				
+			
 			int cnt = 0;
 			//for(int j = 1 ; j < sLis[i].getCoursesTaken().size() ; j++) {
 			for(int j = 1 ; j < sLis.get(i).getCoursesTaken().size() ; j++) {
