@@ -21,15 +21,16 @@ import edu.handong.analysis.utils.Utils;
 
 public class HGUCoursePatternAnalyzer {
 	
-	int hop,s,e,studentii1,studentii2,takenYearr1,takenYearr2,takenSemester1,takenSemester2;
+	int hop,startyearr,endyearr,studentii1,studentii2,takenYearr1,takenYearr2,takenSemester1,takenSemester2;
 	String a="", o="", i="", c="", sth1="";
-	boolean h=false;
+	boolean h=false, dk=true;
 	
 	int pTookTheCourse, numOfStudentInTheSem;
 	public String[] bug;
 	public String[] mola;
 	String takenYearr="", takenSemesterr="", studentIDd="", courseNamee="", diff1="9999", diff2="9999" ;
 	double sth=0.00;
+	
 	
 	//public static Student[] sLis = new Student[253];
 	public static ArrayList<Student> sLis = new ArrayList<Student>();
@@ -103,14 +104,13 @@ public class HGUCoursePatternAnalyzer {
 								//
 								//count++;
 								hash.put(studentii2, ++count);
-								numOfStudentInTheSem++;
+								//numOfStudentInTheSem++;
 								//System.out.println(numOfStudentInTheSem);
 								diff1 = mola[7];
 								diff2 = mola[8];
 							}
 						}
 						
-						//문제
 						numOfStudentInTheSem = hash.size();
 						Double ya = new Double(hash.size());
 						Double yo = new Double(pTookTheCourse);
@@ -121,18 +121,44 @@ public class HGUCoursePatternAnalyzer {
 						sth1 = String.format("%.1f", sth) + "%";
 						
 						//문제가 startYear endYear 고려해야됨. if( startYear(s) endYear(e) )
-						if( (Integer.parseInt(bug[7]) < s) || ( Integer.parseInt(bug[7]) > e ) ) {
-
-						}else {
+						//이게 문제
+						if( (Integer.parseInt(bug[7]) < startyearr) || ( Integer.parseInt(bug[7]) > endyearr ) ) {
+							//do nothing
+						}else{
+							//year semester 이전하고 다를 때만
 							//bug[5]->coursename //bug[7]->takenYear, bug[8]=takenSemester
-							String rst = bug[7]+","+bug[8]+","+c+","+courseNamee+","+Integer.toString(numOfStudentInTheSem)+","+Integer.toString(pTookTheCourse)+","+sth1;
+							String rst = bug[7]+","+bug[8]+","+c+","+courseNamee+","+Integer.toString(numOfStudentInTheSem)+","+Integer.toString(pTookTheCourse)+","+sth1;								
 							result.add(rst);
+							//System.out.println(rst);
 						}
 					}					
 				}
 			}
-			Collections.sort(result); //sorting the arraylist.
-			Utils.writeAAFile(result, o);
+
+			
+			HashMap<String,Integer> wattup = new HashMap<String,Integer>();
+			ArrayList<String> yaya = new ArrayList<String>();
+			
+			//중복이 있으니까 hashmap에 다 key로 넣어버리면 중복은 자동삭제 얼쿠잘
+			for(int q = 0 ; q < result.size() ; q++) {
+				//System.out.println(result.get(q));
+				wattup.put(result.get(q), q);
+			}
+			
+			for(String key: wattup.keySet()) {
+				yaya.add(key);
+				//System.out.println(key);
+			}
+			
+			/*System.out.println(yaya.size());
+			
+			for(int y = 0 ; y < yaya.size() ; y++) {
+				System.out.println(yaya.get(y));
+			}*/
+
+			Collections.sort(yaya); //sorting the arraylist.
+			
+			Utils.writeAAFile(yaya, o);
 			
 			System.exit (0);
 			
@@ -203,8 +229,8 @@ public class HGUCoursePatternAnalyzer {
 			o = commandLine.getOptionValue("o"); //output path
 
 			c = commandLine.getOptionValue("c"); //course code
-			s = Integer.parseInt(commandLine.getOptionValue("s")); //start year
-			e = Integer.parseInt(commandLine.getOptionValue("e")); //end year
+			startyearr = Integer.parseInt(commandLine.getOptionValue("s")); //start year
+			endyearr = Integer.parseInt(commandLine.getOptionValue("e")); //end year
 			
 			h = commandLine.hasOption("h"); //if the arguments has h
 
