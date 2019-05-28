@@ -23,7 +23,7 @@ public class HGUCoursePatternAnalyzer {
 	
 	int hop,startyearr,endyearr,studentii1,studentii2,takenYearr1,takenYearr2,takenSemester1,takenSemester2;
 	String a="", o="", i="", c="", sth1="";
-	boolean h=false, dk=true;
+	boolean h=false, dk=true, cif;
 	
 	int pTookTheCourse, numOfStudentInTheSem;
 	public String[] bug;
@@ -52,11 +52,9 @@ public class HGUCoursePatternAnalyzer {
 		createOption(options); //creating options done.
 		
 		parseOption(options, args);
-		//System.out.println(a);
 		
 		if(h) {
 			printHelp(options);
-			//return;
 			System.exit(0);
 			return;
 		}
@@ -117,7 +115,7 @@ public class HGUCoursePatternAnalyzer {
 						
 						//문제가 startYear endYear 고려해야됨. if( startYear(s) endYear(e) )
 						//이게 문제
-						if( (Integer.parseInt(bug[7]) >= startyearr) || ( Integer.parseInt(bug[7]) <= endyearr ) ) {
+						if( (Integer.parseInt(bug[7]) >= startyearr) && ( Integer.parseInt(bug[7]) <= endyearr ) ) {
 							
 							//year semester 이전하고 다를 때만
 							//bug[5]->coursename //bug[7]->takenYear, bug[8]=takenSemester
@@ -156,8 +154,16 @@ public class HGUCoursePatternAnalyzer {
 			
 			System.exit (0);
 			
-		}else if(a=="1") {
-			//this is generating hw5 result 
+		}else if( (a.equals("1")) && ((cif))) {
+			//this is generating hw5 result from startyear to endyear
+			//if result a and c, then print printhelp
+			
+			printHelp(options);
+			System.exit(0);
+			return;
+			
+		}else if( (a.equals("1")) && (!(cif)) ) {
+			
 		}
 		
 		
@@ -219,6 +225,8 @@ public class HGUCoursePatternAnalyzer {
 			
 			i = commandLine.getOptionValue("i"); //input path
 			
+			cif = commandLine.hasOption("c");
+			
 			//System.out.println(a);
 			o = commandLine.getOptionValue("o"); //output path
 
@@ -230,6 +238,7 @@ public class HGUCoursePatternAnalyzer {
 
 		} catch(Exception e) {
 			printHelp(options);
+			System.exit(0);
 		}
 		
 	}
@@ -307,9 +316,7 @@ public class HGUCoursePatternAnalyzer {
 		//List<Student> stuList = new ArrayList<Student>();
 		//List<Course> cList = new ArrayList<Course>();
 		
-		//System.out.println(lines.get(0));
-		
-		
+		//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 		
 		students = new HashMap<String,Student>();
 		
@@ -320,8 +327,7 @@ public class HGUCoursePatternAnalyzer {
 			students.put(ary[0], sLis[num] = new Student(ary[0]));
 			System.out.println("hi");
 		}*/
-		
-		for(int i = 0 ; i < 253 ; i++) {
+		for(int i = 0 ; i < 253 ; i++) { //for each
 			//String [] ary = lines.get(i).split(",");
 			//sLis[i] = new Student(Integer.toString(i+1)); //sLis는 0~252 , stuId 1~253
 			sLis.add(new Student(Integer.toString(i+1)));
@@ -329,29 +335,36 @@ public class HGUCoursePatternAnalyzer {
 		}
 		
 		for(int i = 0 ; i < lines.size(); i++) {
-				//cLis[i] = new Course(lines.get(i));
 				cLis.add(new Course(lines.get(i)));
 		}
 		
-		//System.out.println(cLis[0].getCourseCode());
-		
-		for(int j = 0 ; j < 253 ; j ++) {
+		for(int j = 0 ; j < sLis.size() ; j ++) {
 			for(int i = 0 ; i < lines.size(); i++) {
-				/*
-				if(Integer.parseInt(sLis[j].getStudentId()) == Integer.parseInt(cLis[i].getStudentId())) {
-					//System.out.println(cLis[i].getCourseCode());
-					sLis[j].addCourse(cLis[i]);
-				}*/
-				if(Integer.parseInt(sLis.get(j).getStudentId()) == Integer.parseInt(cLis.get(i).getStudentId())) {
-					sLis.get(j).addCourse(cLis.get(i));
+				if( Integer.parseInt(sLis.get(j).getStudentId())==Integer.parseInt(cLis.get(i).getStudentId())  ) {
+					sLis.get(j).addCourse(cLis.get(i)); //putting address values into sLis
 				}
-				
 			}
 		}
 		
+		//System.out.println(sLis.get(10).getCoursesTaken().get(1).getCourseName()); //공동체리더십훈련1
+		/*System.out.println(sLis.get(0).getCoursesTaken().get(65).getYearTaken() );
+		
+		
+		for(int i = 0 ; i < sLis.size()-1 ; i ++) {
+			int size = sLis.get(i).getCoursesTaken().size();
+			//System.out.println(size);
+			for(int j = 0 ; j < 10 ; j++) {
+				if( (sLis.get(i).getCoursesTaken().get(j).getYearTaken() >= startyearr) && (sLis.get(i).getCoursesTaken().get(j).getYearTaken() <= endyearr) ) {
+					
+				}else {
+					sLis.get(i).getCoursesTaken().get(1)
+				}
+			}
+		}*/
+		
 		//System.out.println(sLis[1].getCoursesTaken().get(0));
 		
-		return students; // do not forget to return a proper variable.
+		return students;
 	}
 
 	/**
@@ -368,95 +381,119 @@ public class HGUCoursePatternAnalyzer {
 	 */
 	private ArrayList<String> countNumberOfCoursesTakenInEachSemester(Map<String, Student> sortedStudents) {
 		
-		HashMap<String, Integer> [] semesterByYearAndSemester = new HashMap[253];
+		HashMap<String, Integer> [] semesterByYearAndSemester = new HashMap[sLis.size()];
 		ArrayList<String> result = new ArrayList<String>();
     	
 		//for(int i = 0 ; i < sLis.length; i++) {
 		for(int i = 0 ; i < sLis.size() ; i++) {
-			String please1="";
-			if(i<=9) {
-				//please1 ="000" + sLis[i].getStudentId();
-				please1 = sLis.get(i).getStudentId();
-			}else if(i>=10 && i<=99) {
-				//please1 = "00" + sLis[i].getStudentId();
-				please1 = sLis.get(i).getStudentId();
-			}else {
-				//please1 ="0" + sLis[i].getStudentId();
-				please1 = sLis.get(i).getStudentId();
-			}
+			
+			//이 for loop 안에서 sLis.getCourseTaken.getSemesterCourseTaken 이런게 sYear eYear range안에 있으면 ㄱㄱ
+			
 			//int a = Integer.parseInt(sLis[i].getStudentId());
-				//ArrayList<Course> coco = new ArrayList<Course>();
+			//ArrayList<Course> coco = new ArrayList<Course>();
 			//System.out.println(sLis[i].getStudentId());
-				
+			
+			//여기서 ? sortedStudents.getCourseTaken sYear and eYear ㄱㄱ? 해야되나?
+			int size12 = sortedStudents.get(Integer.toString(i+1)).getCoursesTaken().size();
+			
 			int bb = sortedStudents.get(Integer.toString(i+1)).getCoursesTaken().get(0).getSemesterCourseTaken();
 			int aa = sortedStudents.get(Integer.toString(i+1)).getCoursesTaken().get(0).getYearTaken();
+			
+			int aa2 = sortedStudents.get(Integer.toString(i+1)).getCoursesTaken().get(size12-1).getYearTaken();
+			
 			//System.out.println(aa);
 			
-			//int aa = sLis[i].getCoursesTaken().get(0).getYearTaken();
-			//int bb = sLis[i].getCoursesTaken().get(0).getSemesterCourseTaken();
+			//aa가 get(0) 가준이어서 그렇다. 그렇다면 ... 어떻게 해야할까...
 			
-			int cnt = 0;
-			//for(int j = 1 ; j < sLis[i].getCoursesTaken().size() ; j++) {
-			for(int j = 1 ; j < sLis.get(i).getCoursesTaken().size() ; j++) {
-				//System.out.println(sLis[i].getCoursesTaken().size());
+			if( (aa >= startyearr) && (aa2 <= endyearr) ) {
 				
-				//if( ( sLis[i].getCoursesTaken().get(j-1).getYearTaken()!= sLis[i].getCoursesTaken().get(j).getYearTaken() ) || ( sLis[i].getCoursesTaken().get(j-1).getSemesterCourseTaken()!= sLis[i].getCoursesTaken().get(j).getSemesterCourseTaken() )) {
-				if( ( sLis.get(i).getCoursesTaken().get(j-1).getYearTaken()!= sLis.get(i).getCoursesTaken().get(j).getYearTaken() ) || ( sLis.get(i).getCoursesTaken().get(j-1).getSemesterCourseTaken()!= sLis.get(i).getCoursesTaken().get(j).getSemesterCourseTaken() )) {
-					cnt++;
-					String okay = Integer.toString(aa) + "-" + Integer.toString(bb);
-					//sLis[i].getSemestersByYearAndSemester().put(okay, cnt);
-					sLis.get(i).getSemestersByYearAndSemester().put(okay, cnt);
-					
-					//int Nth = sLis[i].getNumCourseInNthSemester(cnt);
-					int Nth = sLis.get(i).getNumCourseInNthSemester(cnt);
-					
-				}else {
-					continue;
+				String please1 = "";
+				if( i>=0 && i <=9 ) {
+					please1 = "000"+ sLis.get(i).getStudentId();
+				}else if( i>9 && i<100 ) {
+					please1 = "00"+ sLis.get(i).getStudentId();					
+				}else if( i>=100 ) {
+					please1 = "0"+ sLis.get(i).getStudentId();
 				}
 					
-			}
-			please1 = please1 +","+ Integer.toString(cnt+1);
-			
-			
-			//System.out.println(sLis[0].getCoursesTaken().size());
-			hop = 0;
-			cnt = 0;
-			//for(int j = 1 ; j < sLis[i].getCoursesTaken().size() ; j++) {
-			for(int j = 1 ; j < sLis.get(i).getCoursesTaken().size() ; j++) {
+				//int aa = sLis[i].getCoursesTaken().get(0).getYearTaken();
+				//int bb = sLis[i].getCoursesTaken().get(0).getSemesterCourseTaken();
 				
-				String please = please1;
-				//System.out.println(sLis[i].getCoursesTaken().size());
+				int cnt = 0;
+				//for(int j = 1 ; j < sLis[i].getCoursesTaken().size() ; j++) {
+				for(int j = 1 ; j < sLis.get(i).getCoursesTaken().size() ; j++) {
+					//System.out.println(sLis[i].getCoursesTaken().size());
+					
+					//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+					//여기 바로 아래랑 하나 아래 더  loop에서 sYear eYear 조건 추가 시키면 되려나??
+					
+					//if( ( sLis[i].getCoursesTaken().get(j-1).getYearTaken()!= sLis[i].getCoursesTaken().get(j).getYearTaken() ) || ( sLis[i].getCoursesTaken().get(j-1).getSemesterCourseTaken()!= sLis[i].getCoursesTaken().get(j).getSemesterCourseTaken() )) {
+					if( ( sLis.get(i).getCoursesTaken().get(j-1).getYearTaken()!= sLis.get(i).getCoursesTaken().get(j).getYearTaken() ) || ( sLis.get(i).getCoursesTaken().get(j-1).getSemesterCourseTaken()!= sLis.get(i).getCoursesTaken().get(j).getSemesterCourseTaken() )) {
+							//System.out.println(j);
+							cnt++;
+							String okay = Integer.toString(aa) + "-" + Integer.toString(bb);
+							//sLis[i].getSemestersByYearAndSemester().put(okay, cnt);
+							sLis.get(i).getSemestersByYearAndSemester().put(okay, cnt);
+							
+							//int Nth = sLis[i].getNumCourseInNthSemester(cnt);
+							int Nth = sLis.get(i).getNumCourseInNthSemester(cnt);
+							
+						}else {
+							continue;
+						
+						}
 				
-				//if( ( sLis[i].getCoursesTaken().get(j-1).getYearTaken()!= sLis[i].getCoursesTaken().get(j).getYearTaken() ) || ( sLis[i].getCoursesTaken().get(j-1).getSemesterCourseTaken()!= sLis[i].getCoursesTaken().get(j).getSemesterCourseTaken() )) {
-				if( ( sLis.get(i).getCoursesTaken().get(j-1).getYearTaken()!= sLis.get(i).getCoursesTaken().get(j).getYearTaken() ) || ( sLis.get(i).getCoursesTaken().get(j-1).getSemesterCourseTaken()!= sLis.get(i).getCoursesTaken().get(j).getSemesterCourseTaken() )) {
-					
-					cnt++;
-					String okay = Integer.toString(aa) + "-" + Integer.toString(bb);
-					//sLis[i].getSemestersByYearAndSemester().put(okay, cnt);
-					sLis.get(i).getSemestersByYearAndSemester().put(okay, cnt);
-					//System.out.println(cnt);
-					
-					//int numOfClasses = sLis[i].getNumCourseInNthSemester(cnt);
-					int numOfClasses = sLis.get(i).getNumCourseInNthSemester(cnt);
-					
-					hop = hop + numOfClasses;
-					
-					please = please1 +","+Integer.toString(cnt)+","+Integer.toString(numOfClasses);
-					
-					result.add(please);
-					//****System.out.println(please);
-					
 				}
-			}
-			
-			//if sLis.get(i).getcoursesTaken().get(j).getYearTaken() >= startyear || <= endyear 일 때만 add.
-				String please = please1+","+Integer.toString(++cnt)+","+Integer.toString(sLis.get(i).getCoursesTaken().size()-hop); 
-			
-			//******System.out.println(please);
-			result.add(please);
+				
+				please1 = please1 +","+ Integer.toString(cnt+1);
+				
+				//System.out.println(sLis[0].getCoursesTaken().size());
+				hop = 0;
+				cnt = 0;
+				//for(int j = 1 ; j < sLis[i].getCoursesTaken().size() ; j++) {
+				for(int j = 1 ; j < sLis.get(i).getCoursesTaken().size() ; j++) {
+					
+					String please = please1;
+					//System.out.println(sLis[i].getCoursesTaken().size());
+					
+					//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+					//여기 바로 아래랑 하나 위에  loop에서 sYear eYear 조건 추가 시키면 되려나??
+					
+					//if( ( sLis[i].getCoursesTaken().get(j-1).getYearTaken()!= sLis[i].getCoursesTaken().get(j).getYearTaken() ) || ( sLis[i].getCoursesTaken().get(j-1).getSemesterCourseTaken()!= sLis[i].getCoursesTaken().get(j).getSemesterCourseTaken() )) {
+					if( ( sLis.get(i).getCoursesTaken().get(j-1).getYearTaken()!= sLis.get(i).getCoursesTaken().get(j).getYearTaken() ) || ( sLis.get(i).getCoursesTaken().get(j-1).getSemesterCourseTaken()!= sLis.get(i).getCoursesTaken().get(j).getSemesterCourseTaken() )) {
+							
+							cnt++;
+							String okay = Integer.toString(aa) + "-" + Integer.toString(bb);
+							//sLis[i].getSemestersByYearAndSemester().put(okay, cnt);
+							sLis.get(i).getSemestersByYearAndSemester().put(okay, cnt);
+							//System.out.println(cnt);
+							
+							//int numOfClasses = sLis[i].getNumCourseInNthSemester(cnt);
+							int numOfClasses = sLis.get(i).getNumCourseInNthSemester(cnt);
+							
+							hop = hop + numOfClasses;
+							
+							please = please1 +","+Integer.toString(cnt)+","+Integer.toString(numOfClasses);
+							
+							result.add(please);
+						}
+				}
+				
+				//if sLis.get(i).getcoursesTaken().get(j).getYearTaken() >= startyear || <= endyear 일 때만 add.
+					String please = please1+","+Integer.toString(++cnt)+","+Integer.toString(sLis.get(i).getCoursesTaken().size()-hop); 
+				
+				//******System.out.println(please);
+				result.add(please);
+			/*}
+			else
+			{
+				continue;
+			}*/
 				
 		}
+		}
 		//result string sLis[i].getStudentId, cnt, semester, Nth.
-		return result; // do not forget to return a proper variable.
+		return result;
 	}
 }
+
