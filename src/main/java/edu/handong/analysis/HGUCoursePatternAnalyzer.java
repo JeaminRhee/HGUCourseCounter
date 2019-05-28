@@ -79,7 +79,7 @@ public class HGUCoursePatternAnalyzer {
 					takenSemester1 = Integer.parseInt(bug[8]);
 					sth=0.00;
 					
-					if( ((Integer.parseInt(bug[7])!=Integer.parseInt(diff1))) && ((Integer.parseInt(bug[8])!=(Integer.parseInt(diff2)))) ) {
+					if( ((Integer.parseInt(bug[7])!=Integer.parseInt(diff1))) || ((Integer.parseInt(bug[8])!=(Integer.parseInt(diff2)))) ) {
 						int count=0;
 						for(String line1: lines) {
 							
@@ -88,20 +88,16 @@ public class HGUCoursePatternAnalyzer {
 							takenYearr2 = Integer.parseInt(mola[7]);
 							takenSemester2 = Integer.parseInt(mola[8]);
 							
-							//맞아
 							if( (c.equals(mola[4])) && (takenYearr.equals(mola[7])) && (takenSemesterr.equals(mola[8])) ) {
 								
-								//
 								pTookTheCourse++;
 								//System.out.println(pTookTheCourse);
 							}
 							
 							//이게 문제' //year sem 같을때만 hashmap에 key로 넣기//  count 하고 studentId중복 있으면 
-							
 							if( (takenYearr1==takenYearr2) && (takenSemester1==takenSemester2)) {
 								
 								//hashmap key는 duplicate 없으니까 key = studentii1, value = count;
-								//
 								//count++;
 								hash.put(studentii2, ++count);
 								//numOfStudentInTheSem++;
@@ -117,14 +113,12 @@ public class HGUCoursePatternAnalyzer {
 						
 						sth = (yo / ya) * 100;
 						
-						
 						sth1 = String.format("%.1f", sth) + "%";
 						
 						//문제가 startYear endYear 고려해야됨. if( startYear(s) endYear(e) )
 						//이게 문제
-						if( (Integer.parseInt(bug[7]) < startyearr) || ( Integer.parseInt(bug[7]) > endyearr ) ) {
-							//do nothing
-						}else{
+						if( (Integer.parseInt(bug[7]) >= startyearr) || ( Integer.parseInt(bug[7]) <= endyearr ) ) {
+							
 							//year semester 이전하고 다를 때만
 							//bug[5]->coursename //bug[7]->takenYear, bug[8]=takenSemester
 							String rst = bug[7]+","+bug[8]+","+c+","+courseNamee+","+Integer.toString(numOfStudentInTheSem)+","+Integer.toString(pTookTheCourse)+","+sth1;								
@@ -455,7 +449,8 @@ public class HGUCoursePatternAnalyzer {
 				}
 			}
 			
-			String please = please1+","+Integer.toString(++cnt)+","+Integer.toString(sLis.get(i).getCoursesTaken().size()-hop); 
+			//if sLis.get(i).getcoursesTaken().get(j).getYearTaken() >= startyear || <= endyear 일 때만 add.
+				String please = please1+","+Integer.toString(++cnt)+","+Integer.toString(sLis.get(i).getCoursesTaken().size()-hop); 
 			
 			//******System.out.println(please);
 			result.add(please);

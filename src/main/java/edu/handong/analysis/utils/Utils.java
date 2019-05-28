@@ -95,6 +95,7 @@ public class Utils {
 		return lines;
 	}*/
 
+	//when a is 1 
 	public static void writeAFile(ArrayList<String> lines, String targetFileName) {
 		//아웃풋 출력을 함.
 		//아웃풋을 작성할 파일이 없으면 filenotfoundexception 해야됨
@@ -105,6 +106,19 @@ public class Utils {
 			
 			int sz = lines.size();
 			output.write("StudentID, TotalNumberOfSemestersRegistered, Semester, NumCoursesTakenInTheSemester\n");
+			/*
+			for(int i = 0 ; i < sz ; i ++) {
+				
+				
+				System.out.println(lines.get(i));
+				String [] bug = lines.get(i).split(",");
+				
+				// error 
+				if((Integer.parseInt(bug[7]) >= startyear) || (Integer.parseInt(bug[7]) <= endyear)) { // print liens only in the range between startyear and endyear	
+					output.write(lines.get(i).toString()+"\n");
+				}
+					
+			}*/
 			for(int i = 0 ; i < sz ; i ++) {
 				output.write(lines.get(i).toString()+"\n");
 			}
@@ -119,6 +133,8 @@ public class Utils {
 		}
 	}
 	
+	
+	//when a is 2 
 	public static void writeAAFile(ArrayList<String> lines, String targetFileName) {
 		//-a 2 -c something 아웃풋 출력을 함.
 		//아웃풋을 작성할 파일이 없으면 filenotfoundexception 해야됨
