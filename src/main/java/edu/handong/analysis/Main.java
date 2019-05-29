@@ -19,6 +19,9 @@ import java.io.IOException;
  * 
  * ex#4) -i hw5data.csv -o output.csv -a 1 -s 1996 -e 2012 -c ITP20003
  * 		It will print out Help description because '-a 1' doesn't need course code input.
+ * 
+ * ex#5) -i hw1data.csv -o output.csv -a 1 -s 1996 -e 2012 -c ITP20003
+ * 		It might print out "The file path does not exist. Please check your CLI argument!" since the correct name of the input file is 'hw5data.csv'.
  */
 
 

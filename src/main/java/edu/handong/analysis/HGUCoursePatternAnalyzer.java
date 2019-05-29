@@ -193,6 +193,7 @@ public class HGUCoursePatternAnalyzer {
 			}  catch (FileNotFoundException e) {
 			System.out.println ("The file path does not exist. Please check your CLI argument!");
 			System.exit (0);
+			return;
 		}
 		
 		
@@ -231,7 +232,9 @@ public class HGUCoursePatternAnalyzer {
 			o = commandLine.getOptionValue("o"); //output path
 
 			c = commandLine.getOptionValue("c"); //course code
+			
 			startyearr = Integer.parseInt(commandLine.getOptionValue("s")); //start year
+			
 			endyearr = Integer.parseInt(commandLine.getOptionValue("e")); //end year
 			
 			h = commandLine.hasOption("h"); //if the arguments has h
