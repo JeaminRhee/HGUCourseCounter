@@ -38,7 +38,7 @@ public class Course{
     
     public String getYearMonthGraduated()
     {
-        return this.yearMonthGraduated;
+        return this.yearMonthGraduated.substring(0,4);
     }
     
     public String getFirstMajor()

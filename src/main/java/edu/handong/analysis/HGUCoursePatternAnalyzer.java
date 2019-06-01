@@ -402,11 +402,11 @@ public class HGUCoursePatternAnalyzer {
 			int bb = sortedStudents.get(Integer.toString(i+1)).getCoursesTaken().get(0).getSemesterCourseTaken();
 			int aa = sortedStudents.get(Integer.toString(i+1)).getCoursesTaken().get(0).getYearTaken();
 			
-			int aa2 = sortedStudents.get(Integer.toString(i+1)).getCoursesTaken().get(size12-1).getYearTaken();
+			//int aa2 = sortedStudents.get(Integer.toString(i+1)).getCoursesTaken().get(size12-1).getYearTaken();
+			
+			int aa2 = Integer.parseInt(sLis.get(i).getCoursesTaken().get(0).getYearMonthGraduated());
 			
 			//System.out.println(aa);
-			
-			//aa가 get(0) 가준이어서 그렇다. 그렇다면 ... 어떻게 해야할까...
 			
 			if( (aa >= startyearr) && (aa2 <= endyearr) ) {
 				
@@ -485,17 +485,11 @@ public class HGUCoursePatternAnalyzer {
 				//if sLis.get(i).getcoursesTaken().get(j).getYearTaken() >= startyear || <= endyear 일 때만 add.
 					String please = please1+","+Integer.toString(++cnt)+","+Integer.toString(sLis.get(i).getCoursesTaken().size()-hop); 
 				
-				//******System.out.println(please);
 				result.add(please);
-			/*}
-			else
-			{
-				continue;
-			}*/
+
 				
 		}
 		}
-		//result string sLis[i].getStudentId, cnt, semester, Nth.
 		return result;
 	}
 }
